@@ -33,8 +33,8 @@ class SugarCRM(object):
         """
 
         parsed_url = list(urlparse.urlparse(url))
-        self.scheme, self.netloc = parsed_url[:2]
-        parsed_url[2] = login_path
+        self.scheme, self.netloc, self.path = parsed_url[:3]
+        parsed_url[2] = parsed_url + login_path
         login_url = urlparse.urlunparse(parsed_url)
         self.base_path = base_path
         if not self.base_path.endswith('/'):
@@ -78,7 +78,7 @@ class SugarCRM(object):
         url = urlparse.urlunparse((
             self.scheme,
             self.netloc,
-            self.base_path + path.lstrip('/'),
+            self.path + self.base_path + path.lstrip('/'),
             params,
             query,
             fragment
